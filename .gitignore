@@ -17,3 +17,8 @@ Makefile
 #este seria el de make log
 *.txt
 !doc/file.txt
+
+
+#packages
+*.tar.gz
+*.tar.bz2
