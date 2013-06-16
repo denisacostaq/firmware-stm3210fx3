@@ -67,7 +67,8 @@
  */
 void LCD_Initialize();
 
-/*! Configure the display 
+/*! Configure the display
+ \param This parameter is not used, WDF??
  \brief Beafore use the display you need initialize this and configure
  \sa LCD_Initialize
 */
