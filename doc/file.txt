@@ -1,0 +1,290 @@
+# Compiler flag to set the C Standard level.
+# c89   - "ANSI" C
+# gnu89 - c89 plus GCC extensions
+# c99   - ISO C99 standard (not yet fully implemented)
+# gnu99 - c99 plus GCC extensions
+CSTANDARD= gnu89
+
+
+# Optimization level, can be [0, 1, 2, 3, s]. 
+# 0 = turn off optimization. s = optimize for size.
+# (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
+OPT = s
+-O0
+Esta es la opción por defecto cuando no se indica ninguna opción de
+optimización, y lo que hace la opción es indicar que no queremos
+optimización. Además ésta es la opción que se recomienda cuando
+vamos a depurar un programa, ya que se evitan efectos extraños en la
+depuración al ir avanzando por el programa paso a paso.
+-O1 (ó -O)
+Esta es la forma más común de optimización, y también se puede
+activar con -O sin indicar nivel de optimización. La opción activa todas
+las optimizaciones excepto el scheduling, y las optimizaciones que
+requieran aumentar el tamaño del programa generado. Con esta
+opción normalmente el programa copilado es menor al generado con -
+O0 , e incluso el programa puede compilar más rápido debido a que
+esta opción hace que el backend del compilador necesite procesar
+menos datos.
+-O2
+Esta opción además de activar las optimizaciones de -O1 activa la
+optimización por scheduling, aunque sigue sin realizar optimizaciones
+que aumenten el tamaño del ejecutable. El introducir la optimización
+por scheduling hace que el tiempo necesario para generar el ejecutable
+aumente considerablemente. En general, esta es la mejor opción para
+las versiones release, ya que proporciona máxima optimización sin
+aumentar el tamaño del ejecutable. De hecho, este es el nivel de
+optimización que suelen usar los paquetes GNU.
+-O3
+Esta opción activa optimizaciones que pueden aumentar el tamaño del
+ejecutable generado (p.e. expandir funciones inline). Normalmente
+estas optimizaciones aumentan la velocidad de ejecución si se dispone
+de memoria RAM suficiente, pero también pueden hacer al programa
+más lento. En general esta optimización se recomienda sólo para
+funciones muy frecuentemente usadas.
+-Os
+Esta opción activa todas las opciones de -O2 más aquellas tendientes a
+reducir el tamaño del ejecutable (aunque el tiempo de ejecución
+pudiera amentar). El uso de esta opción puede hacer que se produzca
+código más lento, pero también puede resultar más rápido debido a
+que carga más rápido y se utiliza mejor la cache.
+-funroll-loops
+Esta opción activa el loop unrolling (deshacer bucles) con lo que
+produce ejecutables más grandes. En general está opción no es
+recomendable, sino que su uso dependerá de cada caso.
+You can invoke GCC
+with ‘-Q --help=optimizers’ to find out the exact set of optimizations that are enabled
+at each level:
+gcc -Q --help=optimizers
+
+#debug mode
+DEBUG = -g
+En general la opción de depuración -g se debería usar
+sólo mientras estemos implementando el programa, mientras que la opción
+de optimización -O
+
+
+-T$(LDSCRIPT) \
+Linker Options
+See Section 3.13 [Options for Linking], page 124.
+object-file-name -llibrary
+-nostartfiles -nodefaultlibs -nostdlib -pie -rdynamic
+-s -static -static-libgcc -shared -shared-libgcc -symbolic
+-T script -Wl,option -Xlinker option
+-u symbol
+
+
+
+-I dir Add the directory dir to the list of directories to be searched for header files.
+      Directories named by ‘-I’ are searched before the standard system include di-
+         rectories. If the directory dir is a standard system include directory, the option
+        is ignored to ensure that the default search order for system directories and the
+       special treatment of system headers are not defeated . If dir begins with =, then
+      the = will be replaced by the sysroot prefix; see ‘--sysroot’ and ‘-isysroot’.
+
+
+
+-D name
+Predefine name as a macro, with definition 1.
+-D name =definition
+The contents of definition are tokenized and processed as if they appeared dur-
+ing translation phase three in a ‘#define’ directive. In particular, the definition
+will be truncated by embedded newline characters.
+If you are invoking the preprocessor from a shell or shell-like program you may
+need to use the shell’s quoting syntax to protect characters such as spaces that
+have a meaning in the shell syntax.
+If you wish to define a function-like macro on the command line, write its
+argument list with surrounding parentheses before the equals sign (if any).
+Parentheses are meaningful to most shells, so you will need to quote the option.
+With sh and csh, ‘-D’name (args...)=definition ’’ works.
+‘-D’ and ‘-U’ options are processed in the order they are given on the command
+line. All ‘-imacros file ’ and ‘-include file ’ options are processed after all
+‘-D’ and ‘-U’ options.
+
+We use the attribute 'packed' to tell GCC not to change
+any of the alignment in the structure.
+
+
+-mthumb
+Generate code for the Thumb instruction set. The default is to use the 32-bit
+ARM instruction set. This option automatically enables either 16-bit Thumb-
+1 or mixed 16/32-bit Thumb-2 instructions based on the ‘-mcpu=name ’ and
+‘-march=name ’ options.
+
+
+
+
+-mcpu=cpu_type
+Set the instruction set, register set, and instruction scheduling parameters for
+machine type cpu type. Supported values for cpu type are ‘v7’, ‘cypress’,
+‘v8’, ‘supersparc’, ‘sparclite’, ‘f930’, ‘f934’, ‘hypersparc’, ‘sparclite86x’,
+‘sparclet’, ‘tsc701’, ‘v9’, ‘ultrasparc’, ‘ultrasparc3’, ‘niagara’ and
+‘niagara2’.
+Default instruction scheduling parameters are used for values that select an
+architecture and not an implementation. These are ‘v7’, ‘v8’, ‘sparclite’,
+‘sparclet’, ‘v9’.
+Here is a list of each supported architecture and their supported implementa-
+tions.
+v7:
+v8:
+sparclite:
+sparclet:
+v9:
+cypress
+supersparc, hypersparc
+f930, f934, sparclite86x
+tsc701
+ultrasparc, ultrasparc3, niagara, niagara2
+By default (unless configured otherwise), GCC generates code for the V7 vari-
+ant of the SPARC architecture. With ‘-mcpu=cypress’, the compiler addition-
+ally optimizes it for the Cypress CY7C602 chip, as used in the SPARCSta-
+tion/SPARCServer 3xx series. This is also appropriate for the older SPARC-
+Station 1, 2, IPX etc.
+With ‘-mcpu=v8’, GCC generates code for the V8 variant of the SPARC archi-
+tecture. The only difference from V7 code is that the compiler emits the integer
+multiply and integer divide instructions which exist in SPARC-V8 but not in
+SPARC-V7. With ‘-mcpu=supersparc’, the compiler additionally optimizes it
+for the SuperSPARC chip, as used in the SPARCStation 10, 1000 and 2000
+series.
+With ‘-mcpu=sparclite’, GCC generates code for the SPARClite variant of the
+SPARC architecture. This adds the integer multiply, integer divide step and
+scan (ffs) instructions which exist in SPARClite but not in SPARC-V7. With
+‘-mcpu=f930’, the compiler additionally optimizes it for the Fujitsu MB86930
+chip, which is the original SPARClite, with no FPU. With ‘-mcpu=f934’, the
+compiler additionally optimizes it for the Fujitsu MB86934 chip, which is the
+more recent SPARClite with FPU.
+With ‘-mcpu=sparclet’, GCC generates code for the SPARClet variant of the
+SPARC architecture. This adds the integer multiply, multiply/accumulate,
+integer divide step and scan (ffs) instructions which exist in SPARClet but
+not in SPARC-V7. With ‘-mcpu=tsc701’, the compiler additionally optimizes
+it for the TEMIC SPARClet chip.
+With ‘-mcpu=v9’, GCC generates code for the V9 variant of the SPARC ar-
+chitecture. This adds 64-bit integer and floating-point move instructions, 3
+additional floating-point condition code registers and conditional move instruc-
+tions. With ‘-mcpu=ultrasparc’, the compiler additionally optimizes it for
+the Sun UltraSPARC I/II/IIi chips. With ‘-mcpu=ultrasparc3’, the compiler
+additionally optimizes it for the Sun UltraSPARC III/III+/IIIi/IIIi+/IV/IV+
+chips. With ‘-mcpu=niagara’, the compiler additionally optimizes it for Sun
+UltraSPARC T1 chips. With ‘-mcpu=niagara2’, the compiler additionally op-
+timizes it for Sun UltraSPARC T2 chips.
+
+
+
+
+
+-ffunction-sections
+-fdata-sections
+Place each function or data item into its own section in the output file if the
+target supports arbitrary sections. The name of the function or the name of
+the data item determines the section’s name in the output file.
+Use these options on systems where the linker can perform optimizations to
+improve locality of reference in the instruction space. Most systems using the
+ELF object format and SPARC processors running Solaris 2 have linkers with
+such optimizations. AIX may have these optimizations in the future.
+Only use these options when there are significant benefits from doing so. When
+you specify these options, the assembler and linker will create larger object and
+executable files and will also be slower. You will not be able to use gprof on all
+systems if you specify this option and you may have problems with debugging
+if you specify both this option and ‘-g’.
+
+
+
+
+-nostartfiles
+Do not use the standard system startup files when linking. The standard system
+libraries are used normally, unless ‘-nostdlib’ or ‘-nodefaultlibs’ is used.
+
+
+
+
+
+-Xlinker option
+Pass option as an option to the linker. You can use this to supply system-specific
+linker options which GCC does not know how to recognize.
+If you want to pass an option that takes a separate argument, you must use
+‘-Xlinker’ twice, once for the option and once for the argument. For example,
+to pass ‘-assert definitions’, you must write ‘-Xlinker -assert -Xlinker
+definitions’. It does not work to write ‘-Xlinker "-assert definitions"’,
+because this passes the entire string as a single argument, which is not what
+the linker expects.
+When using the GNU linker, it is usually more convenient to pass arguments
+to linker options using the ‘option =value ’ syntax than as separate argu-
+ments. For example, you can specify ‘-Xlinker -Map=output.map’ rather than
+‘-Xlinker -Map -Xlinker output.map’. Other linkers may not support this
+syntax for command-line options.
+
+
+
+
+
+
+-M options
+--disassembler-options=options
+Pass target specific information to the disassembler. Only supported on some
+targets. If it is necessary to specify more than one disassembler option then
+multiple ‘-M’ options can be used or can be placed together into a comma
+separated list.
+If the target is an ARM architecture then this switch can be used to select which
+register name set is used during disassembler. Specifying ‘-M reg-names-std’
+(the default) will select the register names as used in ARM’s instruction set
+documentation, but with register 13 called ’sp’, register 14 called ’lr’ and register
+15 called ’pc’. Specifying ‘-M reg-names-apcs’ will select the name set used by
+the ARM Procedure Call Standard, whilst specifying ‘-M reg-names-raw’ will
+just use ‘r’ followed by the register number.
+There are also two variants on the APCS register naming scheme enabled
+by ‘-M reg-names-atpcs’ and ‘-M reg-names-special-atpcs’ which use the
+ARM/Thumb Procedure Call Standard naming conventions. (Either with the
+normal register names or the special register names).
+This option can also be used for ARM architectures to force the disassem-
+bler to interpret all instructions as Thumb instructions by using the switch
+‘--disassembler-options=force-thumb’. This can be useful when attempt-
+ing to disassemble thumb code produced by other compilers.
+For the x86, some of the options duplicate functions of the ‘-m’ switch, but allow
+finer grained control. Multiple selections from the following may be specified
+as a comma separated string. ‘x86-64’, ‘i386’ and ‘i8086’ select disassem-
+bly for the given architecture. ‘intel’ and ‘att’ select between intel syntax
+mode and AT&T syntax mode. ‘intel-mnemonic’ and ‘att-mnemonic’ select
+between intel mnemonic mode and AT&T mnemonic mode. ‘intel-mnemonic’
+implies ‘intel’ and ‘att-mnemonic’ implies ‘att’. ‘addr64’, ‘addr32’, ‘addr16’,
+‘data32’ and ‘data16’ specify the default address size and operand size. These
+four options will be overridden if ‘x86-64’, ‘i386’ or ‘i8086’ appear later in the
+option string. Lastly, ‘suffix’, when in AT&T mode, instructs the disassem-
+bler to print a mnemonic suffix even when the suffix could be inferred by the
+operands.
+For PowerPC, ‘booke’ controls the disassembly of BookE instructions. ‘32’ and
+‘64’ select PowerPC and PowerPC64 disassembly, respectively. ‘e300’ selects
+disassembly for the e300 family. ‘440’ selects disassembly for the PowerPC 440.
+‘ppcps’ selects disassembly for the paired single instructions of the PPC750CL.
+For MIPS, this option controls the printing of instruction mnemonic names
+and register names in disassembled instructions. Multiple selections from the
+following may be specified as a comma separated string, and invalid options are
+ignored:
+
+
+
+
+
+-Map=mapfile
+Print a link map to the file mapfile. See the description of the ‘-M’ option,
+above.
+
+
+
+
+
+
+--no-gc-sections
+Enable garbage collection of unused input sections. It is ignored on targets
+that do not support this option. The default behaviour (of not performing this
+garbage collection) can be restored by specifying ‘--no-gc-sections’ on the
+command line.
+‘--gc-sections’ decides which input sections are used by examining symbols
+and relocations. The section containing the entry symbol and all sections con-
+taining symbols undefined on the command-line will be kept, as will sections
+containing symbols referenced by dynamic objects. Note that when building
+shared libraries, the linker must assume that any visible symbol is referenced.
+Once this initial set of sections has been determined, the linker recursively
+marks as used any section referenced by their relocations. See ‘--entry’ and
+‘--undefined’.
+This option can be set when doing a partial link (enabled with option ‘-r’).
+In this case the root of symbols kept must be explicitely specified either by an
+‘--entry’ or ‘--undefined’ option or by a ENTRY command in the linker script.

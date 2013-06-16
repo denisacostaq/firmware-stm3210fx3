@@ -1,0 +1,19 @@
+nbproject/
+doc/html/
+src/.deps/
+
+#build rules are generated from Makefile.in usig configure file
+Makefile
+
+# Object files
+*.o
+
+#Binaries
+*.as
+*.map
+*.axf
+*.hex
+
+#este seria el de make log
+*.txt
+!doc/file.txt

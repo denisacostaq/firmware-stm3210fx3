@@ -1,0 +1,14 @@
+README, contiene una descripción general del pa-
+quete. También es posible indicar instrucciones
+especiales de instalación o recomendaciones pa-
+ra leer el archivo INSTALL.
+
+Usando la lib STM32F10x_StdPeriph_Lib_V3.5.0 + Free-RTOS
+pero en realidad creo que es v3_2_0
+
+para compilar:
+agregue al PATH, el compilador(arm-none-eabi para este caso)
+./configure --host=arm-none-eabi
+make (no es necesario si va a escribir "make flash_firmware")
+make flash_firmware (compilar y flashar el firmware en memoria usando jtag)
+
