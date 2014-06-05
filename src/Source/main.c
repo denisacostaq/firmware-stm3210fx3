@@ -39,7 +39,10 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
-
+/*! \def MESSAGE
+\brief You should imagine how use this macro an others...
+Details.
+*/
 #define MESSAGE   " Device running " 
 #ifdef USE_STM32100B_EVAL
   #define MESSAGE1   "STM32 MD Value Line "   
@@ -62,13 +65,13 @@
 #endif
 
 /*! Initialize the dispaly
- * \brief Beafore use the display you need initialize this and configure
+ * \brief Before use the display you need initialize and configure this
  * \sa loadConfigParameters
  */
 void LCD_Initialize();
 
 /*! Configure the display
- \param This parameter is not used, WDF??
+ \param a This parameter is not used, WDF??
  \brief Beafore use the display you need initialize this and configure
  \sa LCD_Initialize
 */

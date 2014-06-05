@@ -21,7 +21,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 flash_firmware:
 	make
-	`arm-none-eabi-objcopy src/firmware-stm3210fx3.axf -O binary src/firmware-stm3210fx3.bin`
+	`arm-none-eabi-objcopy src/template-stm3210fx3.axf -O binary src/firmware-stm3210fx3.bin`
 	`sudo openocd -s ./src/common/`
 
 details:

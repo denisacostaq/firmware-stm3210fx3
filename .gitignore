@@ -1,6 +1,8 @@
 nbproject/
 doc/html/
 src/.deps/
+**/src/.deps
+**/.deps
 
 #build rules are generated from Makefile.in usig configure file
 Makefile
